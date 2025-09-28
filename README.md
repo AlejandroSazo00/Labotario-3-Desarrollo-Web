@@ -152,8 +152,8 @@ Todos los contenedores deben estar "Up":
 **Usuario Regular:**
 ```json
 {
-  "email": "user@miumg.edu.gt",
-  "password": "User123$#2025",
+  "email": "alesazo@gmail.com",
+  "password": "Estudio#12345",
   "roleId": 2
 }
 ```
