@@ -1,0 +1,50 @@
+services:
+  backend:
+    build:
+      context: ./desawebback-main
+      dockerfile: Dockerfile
+    ports:
+      - "5062:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=desaweb;User Id=desaweb;Password=D3saweb.2025;TrustServerCertificate=true;
+    networks:
+      - appnet
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=D3saweb.2025$
+    ports:
+      - "1433:1433"
+    networks:
+      - appnet
+
+  frontend:
+    build:
+      context: ./desaweb090-main
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - appnet
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "9090:80"
+    volumes:
+      - ./demoapps.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
